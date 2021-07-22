@@ -72,7 +72,8 @@ class all_articles:
         if len(articles) > 5:
             article_body = articles[0:5]
         for article in article_body:
-            url_2 = "http://www.nytimes.com/" + article.find_parent("a")["href"]
+            url_2 = "http://www.nytimes.com/" + \
+                article.find_parent("a")["href"]
             url_2 = url_2.split("?")[0]
             webpage_2 = self.get_beautifulsoup_webpage(url_2)
             article_body = webpage_2.find(
@@ -141,7 +142,8 @@ class all_articles:
                         "title"
                     )[0]
                     words_in_article = int(reading_time) * 250
-                    url = article.find("a", class_="link link--darken").get("href")
+                    url = article.find(
+                        "a", class_="link link--darken").get("href")
                     article_object = article_obj(title, words_in_article, url)
                     # create an object that contains the details about each article
                     self.articles_list.append(article_object)

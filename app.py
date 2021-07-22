@@ -3,6 +3,7 @@ from get_articles_async import all_articles
 import os
 import logging
 import sys
+import json
 
 app = Flask(__name__)
 app.logger.addHandler(logging.StreamHandler(sys.stdout))
@@ -31,7 +32,10 @@ def getArticles():
     print("returned_reading_time", returned_reading_time)
     for article in returned_articles:
         print(article)
-    return ""
+    returned_articles_json = json.dumps(
+        {"articles": returned_articles, "reading_time": returned_reading_time}
+    )
+    return returned_articles_json
 
 
 if __name__ == "__main__":
