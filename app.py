@@ -15,8 +15,8 @@ def getArticles():
     # Get relevant parameters from the request arguments
     reading_time = request.args.get("reading_time", type=int, default=0)
     reading_speed = request.args.get("reading_speed", type=int, default=250)
-    websites = request.args.getlist("websites[]")
-    themes = request.args.getlist("themes[]")
+    websites = request.args.getlist("websites")
+    themes = request.args.getlist("themes")
     print(websites, themes)
     # Instantiate an all articles object
     all_articles_object = all_articles()
@@ -32,9 +32,13 @@ def getArticles():
     print("returned_reading_time", returned_reading_time)
     for article in returned_articles:
         print(article)
-    returned_articles_json = json.dumps(
-        {"articles": returned_articles, "reading_time": returned_reading_time}
-    )
+    try:
+        returned_articles_json = json.dumps(
+            {"articles": returned_articles, "reading_time": returned_reading_time}
+        )
+    except ValueError as e:
+        print("ValueError", e)
+        return ""
     return returned_articles_json
 
 

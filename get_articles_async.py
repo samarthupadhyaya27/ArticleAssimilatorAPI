@@ -142,17 +142,22 @@ class all_articles:
         while (time < (reading_time * 0.80)) and (len(self.articles_list) != 0):
             # Use a random variable as an index into the list
             random_variable = random.randint(0, len(self.articles_list) - 1)
+            # Get a random article
+            random_article = self.articles_list[random_variable]
             # Add an article to the list of articles to be presented
-            articles_to_present.append(self.articles_list[random_variable])
-            # Update the reading time
-            time = time + (
-                (self.articles_list[random_variable].word_count) /
-                reading_speed
+            articles_to_present.append(
+                {
+                    "title": random_article.title,
+                    "word_count": random_article.word_count,
+                    "url": random_article.url,
+                }
             )
+            # Increment the total reading time
+            time += random_article.word_count / reading_speed
             # Remove the used article from the list
-            self.articles_list.remove(self.articles_list[random_variable])
-            # If the reading time is now too long pop
-            # the article that made the reading time too long
+            self.articles_list.remove(random_article)
+            # If the reading time is now too long pop the
+            # article that made the reading time too long
             if time > reading_time:
                 articles_to_present.pop()
         return (articles_to_present, time)
