@@ -1,12 +1,13 @@
 import json
 import asyncio
 import aiohttp
+import Constants
 import random
 from typing import Tuple
 
 
 # Object to store the articles along with information about them
-class article_obj:
+class ArticleObject:
     def __init__(self, title: str, word_count: int, url: str):
         self.title = title
         self.word_count = word_count
@@ -23,7 +24,7 @@ class article_obj:
         )
 
 
-class all_articles:
+class AllArticles:
     def __init__(self):
         self.articles_list = []
 
@@ -53,12 +54,11 @@ class all_articles:
             await asyncio.gather(*tasks)
 
     async def nytimes_search(self, session: aiohttp.ClientSession, theme: str):
-        api_key = "YfU0SYYg6sXIPYAch9b5WHRtN5UfXwAQ"
         api_request_url = (
             "https://api.nytimes.com/svc/search/v2/articlesearch.json?q=theme&api-key="
         )
         api_request_url = api_request_url.replace("theme", theme)
-        api_request_url += api_key
+        api_request_url += Constants.NY_TIMES_API_KEY
         # Make an request from the New York Times api
         async with session.get(api_request_url) as response:
             # Check if the response was valid
@@ -81,8 +81,9 @@ class all_articles:
                     word_count = article["word_count"]
                     url = article["web_url"]
                     if word_count != 0 and article_headline != "" and url != "":
-                        article_object = article_obj(
-                            article_headline, word_count, url)
+                        article_object = ArticleObject(
+                            article_headline, word_count, url
+                        )
                         self.articles_list.append(article_object)
                 except KeyError as e:
                     print("KeyError", e)
@@ -120,7 +121,7 @@ class all_articles:
                         # If all the fields are not empty add
                         # the object you want
                         if word_count != 0 and article_headline != "" and url != "":
-                            article_object = article_obj(
+                            article_object = ArticleObject(
                                 article_headline, word_count, url
                             )
                             self.articles_list.append(article_object)

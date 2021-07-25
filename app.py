@@ -1,5 +1,5 @@
 from flask import Flask, request
-from get_articles_async import all_articles
+from get_articles_async import AllArticles
 import os
 import logging
 import sys
@@ -11,15 +11,14 @@ app.logger.setLevel(logging.ERROR)
 
 
 @app.route("/", methods=["GET"])
-def getArticles():
+def get_articles():
     # Get relevant parameters from the request arguments
     reading_time = request.args.get("reading_time", type=int, default=0)
     reading_speed = request.args.get("reading_speed", type=int, default=250)
     websites = request.args.getlist("websites")
     themes = request.args.getlist("themes")
-    print(websites, themes)
     # Instantiate an all articles object
-    all_articles_object = all_articles()
+    all_articles_object = AllArticles()
     # Populate the all articles object with the data generated with the input parameters
     all_articles_object.populate_articles_list(themes, websites)
     # Get articles that fit the desired reading time

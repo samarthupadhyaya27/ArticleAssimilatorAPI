@@ -1,3 +1,0 @@
-alias r='python3 get_articles_async.py'
-alias r2='python3 app.py'
-alias r3='python3 scratch.py'

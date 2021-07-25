@@ -1,3 +1,4 @@
+# Original (slow and cumbersome) method of getting articles
 from urllib.request import urlopen, HTTPError, Request
 from bs4 import BeautifulSoup
 import Levenshtein
@@ -8,7 +9,7 @@ import random
 # Will be done using API calls for websites
 
 
-class article_obj:
+class ArticleObj:
     def __init__(self, title, word_count, url):
         self.title = title
         self.word_count = word_count
@@ -25,7 +26,7 @@ class article_obj:
         )
 
 
-class all_articles:
+class allArticles:
     def __init__(self, themes, websites):
         self.articles_list = []
         # list full of article objects
@@ -45,16 +46,14 @@ class all_articles:
         try:
             html = urlopen(req)
         except HTTPError as e:
-
-            # print("HTTPError")
+            print("HTTPError", e)
             return None
         try:
             webpage = BeautifulSoup(html.read(), "lxml")
 
         # print(webpage)
         except AttributeError as e:
-
-            # print("AttributeError")
+            print("AttributeError", e)
             return None
         return webpage
 
@@ -84,7 +83,7 @@ class all_articles:
                 text_string = text_string + " " + text_section.text
             word_count = text_string.count(" ")
             title = article.text
-            article_object = article_obj(title, word_count, url_2)
+            article_object = ArticleObj(title, word_count, url_2)
             self.articles_list.append(article_object)
 
     def medium_search_by_themes(self, theme):
@@ -144,7 +143,7 @@ class all_articles:
                     words_in_article = int(reading_time) * 250
                     url = article.find(
                         "a", class_="link link--darken").get("href")
-                    article_object = article_obj(title, words_in_article, url)
+                    article_object = ArticleObj(title, words_in_article, url)
                     # create an object that contains the details about each article
                     self.articles_list.append(article_object)
                 except AttributeError as e:
